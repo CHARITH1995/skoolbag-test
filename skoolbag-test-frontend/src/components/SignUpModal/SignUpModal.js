@@ -6,6 +6,8 @@ import allActions from "../../actions/index";
 
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 
+
+
 const SignUpModal = ({ signUpShow, handleClose }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -16,14 +18,8 @@ const SignUpModal = ({ signUpShow, handleClose }) => {
   const [postalCode, setPostalCode] = useState("");
   const [suburb, setsuburb] = useState("");
   const [state, setState] = useState("");
-  const [showModal , setShowModal] = useState(false);
   const [isSubmit , setIsSubmit] = useState(false)
   const dispatch = useDispatch();
-
-
-  useEffect(()=>{
-    setShowModal(signUpShow)
-  });
 
 
   const userSignUp = () => {
@@ -65,7 +61,7 @@ const SignUpModal = ({ signUpShow, handleClose }) => {
 
   return (
     <div>
-      <Modal show={showModal} onHide={handleClose}>
+      <Modal show={signUpShow} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Sign Up using Here</Modal.Title>
         </Modal.Header>

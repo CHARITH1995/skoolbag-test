@@ -59,8 +59,10 @@ exports.registerUser = (req, res, _next) => {
 };
 
 exports.userLogin = (req, res, _next) => {
+    console.log(req.body.email)
   const sql = "SELECT * FROM users WHERE email= " + mysql.escape(req.body.email);
   con.query(sql, (err, result, fields) => {
+      console.log(result)
     if (err) return res.status(500).send("something went wrong");
     if (result.length == 0) {
       return res.status(500).send("Incorrect user!");
