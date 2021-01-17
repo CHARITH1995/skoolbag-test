@@ -3,61 +3,73 @@ import { Modal, Form, FormControl, Button } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import allActions from "../../actions/index";
+import { Formik } from "formik";
+import * as yup from "yup";
 
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
+import TextInput from "../TextInput/TextInput";
 
-
+const schema = yup.object({
+  firstName: yup
+    .string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("FirstName is Required"),
+  lastName: yup
+    .string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("LastName is Required"),
+  email: yup.string().email("Invalid email").required("Email is Required"),
+  suburb: yup.string().required("suburb is Required"),
+  postalCode: yup.number().required("postalCode is Required"),
+  state: yup.string().required("State is Required"),
+  street: yup.string().required("Street is Required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(4, "Password is too short - should be 4 chars minimum"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match"),
+});
 
 const SignUpModal = ({ signUpShow, handleClose }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [street, setStreet] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [suburb, setsuburb] = useState("");
-  const [state, setState] = useState("");
-  const [isSubmit , setIsSubmit] = useState(false)
+  const [isSubmit, setIsSubmit] = useState(false);
   const dispatch = useDispatch();
 
-
-  const userSignUp = () => {
+  const handleSubmit = (user) => {
     setIsSubmit(true);
     dispatch(
       allActions.userAction.registerUser(
-        firstName,
-        lastName,
-        password,
-        email,
-        suburb,
-        postalCode,
-        state,
-        street
+        user.firstName,
+        user.lastName,
+        user.password,
+        user.email,
+        user.suburb,
+        user.postalCode,
+        user.state,
+        user.street
       )
-    )
-    
-  }
+    );
+  };
 
   const isLoading = useSelector((state) => {
     return state.user.isLoad;
   });
 
-  const isSuccess = useSelector((state)=>{
-    return state.user.registered
-  })
+  const isSuccess = useSelector((state) => {
+    return state.user.registered;
+  });
 
-  useEffect(()=>{
-    
-    if(isSuccess){
+  useEffect(() => {
+    if (isSuccess) {
       toast.success("Successfully Registered!");
     }
-    if(!isSuccess && !isLoading && isSubmit){
+    if (!isSuccess && !isLoading && isSubmit) {
       toast.error("Fail Registered!");
     }
-  },[isLoading])
-
-
+  }, [isLoading]);
 
   return (
     <div>
@@ -66,85 +78,101 @@ const SignUpModal = ({ signUpShow, handleClose }) => {
           <Modal.Title>Sign Up using Here</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <Form.Group>
-              <Form.Label>First Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter First Name"
-                readOnly={false}
-                onChange={(t) => setFirstName(t.target.value)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Last Name :</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter Last Name"
-                readOnly={false}
-                onChange={(t) => setLastName(t.target.value)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Email :</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                readOnly={false}
-                onChange={(t) => setEmail(t.target.value)}
-              />
-            </Form.Group>
-            <Form.Group>
-              <Form.Label>Address</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Street"
-                className="form-container"
-                onChange={(t) => setStreet(t.target.value)}
-              />
-              <Form.Control
-                type="text"
-                placeholder="Suburb"
-                className="form-container"
-                onChange={(t) => setsuburb(t.target.value)}
-              />
-              <Form.Control
-                type="number"
-                placeholder="Postalcode"
-                className="form-container"
-                onChange={(t) => setPostalCode(t.target.value)}
-              />
-              <Form.Control
-                type="text"
-                placeholder="State"
-                className="form-container"
-                onChange={(t) => setState(t.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                onChange={(t) => setPassword(t.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Confirm Password"
-                onChange={(t) => setConfirmPassword(t.target.value)}
-              />
-            </Form.Group>
-          </Form>
+          <Formik
+            initialValues={{
+              firstName: "",
+              lastName: "",
+              password: "",
+              email: "",
+              suburb: "",
+              postalCode: "",
+              state: "",
+              street: "",
+              confirmPassword: "",
+            }}
+            validationSchema={schema}
+            onSubmit={(user) => handleSubmit(user)}
+          >
+            {({
+              handleSubmit,
+              handleChange,
+              handleBlur,
+              values,
+              errors,
+              touched,
+              dirty,
+              isValid,
+            }) => {
+              console.log(errors);
+              return (
+                <form onSubmit={handleSubmit}>
+                  <TextInput
+                    label={"First Name"}
+                    type={"text"}
+                    name={"firstName"}
+                    placeholder={"Enter your First Name"}
+                  />
+                  <TextInput
+                    label={"LastName"}
+                    type={"text"}
+                    name={"lastName"}
+                    placeholder={"Enter your Last Name"}
+                  />
+                  <TextInput
+                    label={"Email"}
+                    type={"email"}
+                    name={"email"}
+                    placeholder={"Enter your Email"}
+                  />
+                  <TextInput
+                    label={"Address"}
+                    type={"text"}
+                    name={"street"}
+                    placeholder={"Enter Street Name"}
+                  />
+                  <TextInput
+                    type={"text"}
+                    name={"suburb"}
+                    placeholder={"Enter Suburb Name"}
+                  />
+                  <TextInput
+                    type={"text"}
+                    name={"state"}
+                    placeholder={"Enter State Name"}
+                  />
+                  <TextInput
+                    type={"number"}
+                    name={"postalCode"}
+                    placeholder={"Enter postalcode "}
+                  />
+                  <TextInput
+                    label={"Password"}
+                    type={"password"}
+                    name={"password"}
+                    placeholder={"Enter your password"}
+                  />
+                  <TextInput
+                    label={"Confirm Password"}
+                    type={"password"}
+                    name={"confirmPassword"}
+                    placeholder={"Confirm the Password"}
+                  />
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    className={!(dirty && isValid) ? "disabled-btn" : ""}
+                    disabled={!(dirty && isValid)}
+                  >
+                    Sign In
+                  </Button>
+                </form>
+              );
+            }}
+          </Formik>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
-          </Button>
-          <Button variant="primary" onClick={userSignUp}>
-            Sign Up
           </Button>
         </Modal.Footer>
       </Modal>

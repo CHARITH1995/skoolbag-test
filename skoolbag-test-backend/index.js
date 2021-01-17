@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const userRoutes = require('./routes/user.routes');
+const schoolRoutes = require('./routes/school.routes');
 const con = require('./config/connection/connection');
 
 
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 app.use(cors({credentials: true}));
 
 app.use('/api/v1/user',userRoutes);
+app.use('/api/v1/school',schoolRoutes);
 
 
 

@@ -16,6 +16,7 @@ export const userLogin = (email, password) => {
     try {
       const rawResponse = await API.post(URL.USER_LOGIN, user, false);
       const response = await API.processResponse(rawResponse);
+      
       if (rawResponse.status == 200) {
         loginUserSuccess(dispatch, response);
       } else {

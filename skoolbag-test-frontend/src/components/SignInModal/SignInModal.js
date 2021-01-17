@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { Modal ,Form,FormControl,Button} from "react-bootstrap";
+import { Modal ,Form,Button} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+
 import allActions from "../../actions/index";
 import { toast } from "react-toastify";
 
+import TextInput from '../TextInput/TextInput';
+
+import { Formik } from "formik";
+import * as yup from "yup";
+
+const schema = yup.object({
+  email: yup.string().email("Invalid email").required("Email is Required"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(4, "Password is too short - should be 4 chars minimum"),
+})
+
 const SignInModal = ({signInShow , handleClose}) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
   const dispatch = useDispatch();
   const [isSubmit , setIsSubmit] = useState(false)
 
-  const userSignIn = ()=>{
+  const handleSubmit = (user)=>{
     setIsSubmit(true);
     dispatch(
       allActions.userLoginAction.userLogin(
-        email,
-        password,
+        user.email,
+        user.password,
       )
     )
   }
@@ -29,8 +42,7 @@ const SignInModal = ({signInShow , handleClose}) => {
   })
 
   useEffect(()=>{
-    console.log("is_logging",isLogging)
-    console.log("login",isLoginSuccess)
+
     if(isLoginSuccess){
       toast.success("Login Successfull !");
       handleClose()
@@ -51,32 +63,55 @@ const SignInModal = ({signInShow , handleClose}) => {
           <Modal.Title>Sign In using here</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form>
-            <Form.Group>
-              <Form.Label>Email :</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                readOnly={false}
-                onChange={(t) => setEmail(t.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control 
-              type="password" 
-              placeholder="Password" 
-              onChange={(t) => setPassword(t.target.value)}
-              />
-            </Form.Group>
-          </Form>
+        <Formik
+            initialValues={{
+              password: "",
+              email: "",
+            }}
+            validationSchema={schema}
+            onSubmit={(user) => handleSubmit(user)}
+          >
+            {({
+              handleSubmit,
+              handleChange,
+              handleBlur,
+              values,
+              errors,
+              touched,
+              dirty,
+              isValid,
+            }) => {
+              console.log(errors);
+              return (
+                <form onSubmit={handleSubmit}>
+                  <TextInput
+                    label={"Email"}
+                    type={"email"}
+                    name={"email"}
+                    placeholder={"Enter your Email"}
+                  />
+                  <TextInput
+                    label={"Password"}
+                    type={"password"}
+                    name={"password"}
+                    placeholder={"Enter your password"}
+                  />
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    className={!(dirty && isValid) ? "disabled-btn" : ""}
+                    disabled={!(dirty && isValid)}
+                  >
+                    Sign In
+                  </Button>
+                </form>
+              );
+            }}
+          </Formik>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
-          </Button>
-          <Button variant="primary" onClick={userSignIn}>
-            Sign In
           </Button>
         </Modal.Footer>
       </Modal>

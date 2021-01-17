@@ -22,12 +22,6 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case REG_USER:
-      return { ...state, registered: false, isLoad: true };
-    case REG_USER_SUCCESS:
-      return { ...state, registered: true, isLoad: false };
-    case REG_USER_FAIL:
-      return { ...state, registered: false, isLoad: false, ...INITIAL_STATE };
 
     case LOGIN_USER:
       return { ...state, login: false, is_login: true };
