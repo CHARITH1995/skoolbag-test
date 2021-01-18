@@ -23,4 +23,7 @@
 
 # API collection - https://www.getpostman.com/collections/ce828dd4e67e4018a348
 
+# Application url - https://skoolbagfrontend.herokuapp.com/
+
+
 
