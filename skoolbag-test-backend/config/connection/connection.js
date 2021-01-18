@@ -1,15 +1,12 @@
-var mysql = require("mysql");
+const mysql = require("mysql");
+const config = require('../../config');
 require("dotenv").config();
 
 var con = mysql.createConnection({
-  //   host: "us-cdbr-east-03.cleardb.com",
-  //   user: "b3389772773d57",
-  //   password: "3158bc1d",
-  //   database: "heroku_fed593341f6a8d5"
-  host: "sql12.freemysqlhosting.net",
-  user: "sql12387709",
-  password: "qjgdYYAYNE",
-  database: "sql12387709",
+  host: process.env.DB_HOSTING,
+  user: process.env.DB_USER,
+  password: process.env.DB_PWD,
+  database: process.env.DB_NAME
 });
 con.connect(function (err) {
   if (!err) {
