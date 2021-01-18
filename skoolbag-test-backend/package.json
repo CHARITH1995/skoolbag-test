@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start":"node index.js"
   },
   "dependencies": {
     "archiver": "^5.2.0",

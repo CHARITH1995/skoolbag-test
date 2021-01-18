@@ -14,7 +14,7 @@ exports.registerUser = (req, res, _next) => {
     res.status(500).send("Incorrect email format!");
   } else {
     const checkEmail =
-      "SELECT email from Users WHERE email = " + mysql.escape(req.body.email);
+      "SELECT email from users WHERE email = " + mysql.escape(req.body.email);
     con.query(checkEmail, (err, result, fields) => {
       if (err) {
         return res.status(500).send("something went wrong");
