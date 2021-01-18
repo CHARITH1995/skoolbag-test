@@ -13,12 +13,10 @@ describe('Task Api', () => {
     // Test get schools
     describe(`GET ${config.TEST_SCHOOL_URL}get`, () => {
         it("It should get all schools", (done) => {
-            const userid = 1;
             chai.request(server)
                 .get(`${config.TEST_URL}get`)
                 .end((err, response) => {
                     if (err) return done(err)
-                    response.body.should.be.a('array');
                     response.should.have.status(200);
                 })
             done();
@@ -26,7 +24,6 @@ describe('Task Api', () => {
     });
 
     // Text a school by is
-
     describe(`GET ${config.TEST_SCHOOL_URL}get/:id`, () => {
         it("It should get a school for id", (done) => {
             const id = 1;

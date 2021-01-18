@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-bootstrap";
 
-const Slideritem = () => {
+const Slideritem = ({ imageUrl, caption, discription }) => {
   return (
     <div>
-      <img
-        className="d-block w-100"
-        src="https://upload.wikimedia.org/wikipedia/commons/b/bf/University_of_South_Australia%2C_School_of_Mines%2C_North_Terrace%2C_Adelaide%2C_South_Australia.jpg"
-        alt="First slide"
-      />
+      <img className="d-block w-100" src={imageUrl} alt="First slide" />
       <Carousel.Caption>
-        <h3>First slide label</h3>
-        <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+        <h3>{caption}</h3>
+        <p>{discription}</p>
       </Carousel.Caption>
     </div>
   );

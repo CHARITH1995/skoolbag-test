@@ -1,5 +1,5 @@
 
-import { BaseURL } from './ServiceURL';
+import { BaseURL , DevURL } from './ServiceURL';
 import { token } from '../config/token';
 
 const TAG = 'Api : '
@@ -59,7 +59,7 @@ class Api {
 
   static async callRes(route, params, header, verb) {
 
-    const host = BaseURL;
+    const host = DevURL;
     const url = `${host}${route}`
     let options = Object.assign({ method: verb }, params ? { body: JSON.stringify(params) } : null);
 
@@ -92,7 +92,7 @@ class Api {
     if (response && response.status < 200 || response.status >= 300) {
       const error: any = new Error(response.statusText);
       const contentType = response.headers.get('Content-Type');
-      let errorMessage = null; // Maybe use a default error message?
+      let errorMessage = null;
 
       if (contentType && contentType.includes('text/plain')) {
         errorMessage = await response.text();

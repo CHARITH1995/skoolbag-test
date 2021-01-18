@@ -50,6 +50,7 @@ const SchoolForm = ({
   return (
     <div>
       <Formik
+         enableReinitialize = {true}
         initialValues={{
           schoolName: schoolName,
           principalName: principalName,

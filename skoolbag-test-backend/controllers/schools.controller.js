@@ -1,6 +1,16 @@
 const mysql = require("mysql");
 const con = require("../config/connection/connection");
 const validations = require("../config/validations/validation");
+/**
+ * @api {post} /api/v1/school/add info 2.add school info
+ * @apiVersion 1.0.0
+ * @apiName school add info
+ * @apiGroup school
+ * @apiDescription add basic school informations.
+ * @apiPermission true
+ * 
+ * @apiParam no
+*/
 
 exports.schoolAdd = (req, res, _next) => {
     
@@ -49,6 +59,17 @@ exports.schoolAdd = (req, res, _next) => {
   }
 };
 
+/**
+ * @api {get} /api/v1/school/get   get school info
+ * @apiVersion 1.0.0
+ * @apiName  get school info
+ * @apiGroup school
+ * @apiDescription get basic school informations.
+ * @apiPermission true
+ * 
+ * @apiParam no
+*/
+
 
 exports.getSchools = (req, res, _next) => {
     const sql = "SELECT * FROM schools";
@@ -62,17 +83,17 @@ exports.getSchools = (req, res, _next) => {
     });
   };
 
-  exports.getSchoolById = (req, res, _next) => {
-    const sql = "SELECT * FROM schools where id = "+ mysql.escape(req.params.id);
-    con.query(sql, (err, result, fields) => {
-      if (err) return res.status(500).send("something went wrong");
-      if (result.length == 0) {
-        return res.status(500).send("something went wrong");
-      } else {
-        return res.status(200).json(result)
-      }
-    });
-  };
+
+  /**
+ * @api {get} /api/v1/school/get/:id get school data by id
+ * @apiVersion 1.0.0
+ * @apiName get school data by id
+ * @apiGroup school
+ * @apiDescription get basic information about a school
+ * @apiPermission true
+ * 
+ * @apiParam yes
+*/
 
   exports.getSchoolById = (req, res, _next) => {
     const sql = "SELECT * FROM schools where schoolId = "+ mysql.escape(req.params.id);
@@ -85,6 +106,17 @@ exports.getSchools = (req, res, _next) => {
       }
     });
   };
+
+/**
+ * @api {get} /api/v1/school/gets/recent  get recently added schools
+ * @apiVersion 1.0.0
+ * @apiName get recently added schools
+ * @apiGroup school
+ * @apiDescription get basic information about recently added schools
+ * @apiPermission true
+ * 
+ * @apiParam no
+*/
 
 
   exports.getRecentlyAddSchools = (req, res, _next) => {

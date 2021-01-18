@@ -9,14 +9,7 @@ const Schoolpage = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const [schoolName, setSchoolName] = useState("");
-  const [principalName, setPrincipalName] = useState("");
-  const [email, setEmail] = useState("");
-  const [street, setStreet] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [suburb, setsuburb] = useState("");
-  const [state, setState] = useState("");
-  const [studentCount, setStudentCount] = useState("");
+
 
   const getSchoolById = useCallback(
     () => dispatch(allActions.getSchoolByIdAction.getASchoolById(id)),
