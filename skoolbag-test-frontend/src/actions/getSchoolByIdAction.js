@@ -9,7 +9,7 @@ export const getASchoolById = (id) => {
 
         const url = URL.SCHOOL_GET_BY_ID + id
         try {
-            const rawResponse = await API.get(url, false);
+            const rawResponse = await API.get(url,null,false);
             const responseData = await API.processResponse(rawResponse);
             
             if (rawResponse.status == 200) {

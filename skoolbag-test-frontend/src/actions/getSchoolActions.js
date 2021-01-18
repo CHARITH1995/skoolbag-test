@@ -7,7 +7,7 @@ export const getSchools = () => {
     return async (dispatch) => {
         dispatch({ type: GET_SCHOOL }); 
         try {
-            const rawResponse = await API.get(URL.SCHOOLS_GET, false);
+            const rawResponse = await API.get(URL.SCHOOLS_GET,null,false);
             const responseData = await API.processResponse(rawResponse);
             
             if (rawResponse.status == 200) {

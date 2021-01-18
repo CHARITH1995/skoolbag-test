@@ -3,7 +3,6 @@ import RecentlyAddedItem from '../RecentItem/RecentItem';
 
 const RecentlyAddedItemList = (recentList) =>{
 
-    console.log("rrr",recentList)
     return(
         <div>
       {recentList.recentList.map((school, i) => (

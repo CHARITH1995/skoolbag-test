@@ -27,7 +27,7 @@ export const schoolAdd = (
       state: state,
     };
     try {
-      const rawResponse = await API.post(URL.SCHOOL_ADD, school, false);
+      const rawResponse = await API.post(URL.SCHOOL_ADD, school,true);
       if (rawResponse.status == 200) {
         schoolAddSuccess(dispatch);
       } else {

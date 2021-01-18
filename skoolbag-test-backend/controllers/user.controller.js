@@ -6,6 +6,7 @@ const validations = require("../config/validations/validation");
 require("dotenv").config();
 
 exports.registerUser = (req, res, _next) => {
+ 
   let hashedPassword = validations.generateHash(req.body.password);
   let email = validations.emailValidation(req.body.email);
 
@@ -18,8 +19,9 @@ exports.registerUser = (req, res, _next) => {
       if (err) {
         return res.status(500).send("something went wrong");
       }
+      
       if (result[0]) {
-        return res.status(500).send({ error : "Duplicate email found" });
+        return res.status(500).send("Duplicate email found");
       } else {
         const sql =
           "INSERT INTO users (userId , firstName , lastName , street , suburb , postalcode , state  , email , password ) VALUES ('" +
@@ -43,6 +45,7 @@ exports.registerUser = (req, res, _next) => {
           "')";
 
         con.query(sql, (error, result, fields) => {
+          
           if (error) return res.status(500).send("something went wrong");
           const user = {
             userId: result.insertId,
@@ -51,7 +54,7 @@ exports.registerUser = (req, res, _next) => {
             email: req.body.email,
           };
           const token = jwt.sign(JSON.stringify(user), process.env.SECRETKEY);
-          return res.status(200).json({ success: true, token: token });
+          return res.status(200).json(token);
         });
       }
     });
@@ -67,8 +70,14 @@ exports.userLogin = (req, res, _next) => {
     } else {
       const userPassword = result[0].password;
       if (validations.verifyPassword(req.body.password, userPassword)) {
-        const token = jwt.sign(JSON.stringify(result[0]), process.env.SECRETKEY);
-        return res.status(200).json({ success: true, token: token });
+        const user = {
+          userId: result[0].userId,
+          firstName: result[0].firstName,
+          lastName: result[0].lastName,
+          email: result[0].userId.email,
+        };
+        const token = jwt.sign(JSON.stringify(user), process.env.SECRETKEY);
+        return res.status(200).json(token);
       } else {
         return res.status(500).send("something went wrong");
       }

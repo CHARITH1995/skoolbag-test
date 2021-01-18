@@ -36,6 +36,7 @@ const schema = yup.object({
 
 const SignUpModal = ({ signUpShow, handleClose }) => {
   const [isSubmit, setIsSubmit] = useState(false);
+  const [isShowed, setIsShowed] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = (user) => {
@@ -55,19 +56,20 @@ const SignUpModal = ({ signUpShow, handleClose }) => {
   };
 
   const isLoading = useSelector((state) => {
-    return state.user.isLoad;
+    return state.user.is_register;
   });
 
   const isSuccess = useSelector((state) => {
-    return state.user.registered;
+    return state.user.register;
   });
 
-  useEffect(() => {
-    if (isSuccess) {
+  useEffect(() => {  
+    if (isSuccess && isSubmit) {
       toast.success("Successfully Registered!");
+      handleClose();
     }
     if (!isSuccess && !isLoading && isSubmit) {
-      toast.error("Fail Registered!");
+      toast.error("Registration Fail!");
     }
   }, [isLoading]);
 
@@ -103,7 +105,6 @@ const SignUpModal = ({ signUpShow, handleClose }) => {
               dirty,
               isValid,
             }) => {
-              console.log(errors);
               return (
                 <form onSubmit={handleSubmit}>
                   <TextInput

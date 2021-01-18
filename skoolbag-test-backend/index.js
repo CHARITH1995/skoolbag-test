@@ -10,6 +10,9 @@ const schoolRoutes = require('./routes/school.routes');
 const con = require('./config/connection/connection');
 
 
+
+
+
 app.use(express.json({extended:false}))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

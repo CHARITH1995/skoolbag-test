@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import NavBar from "../../components/Navbar/NavBar";
 import SchoolForm from "../../components/SchoolForm/SchoolForm";
 import { Button } from "react-bootstrap";
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import allActions from "../../actions/index";
-
+import { token } from '../../config/token';
 import { toast } from "react-toastify";
 
 const AddSchoolPage = () => {
   const [isSubmit, setIsSubmit] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const addSchool = (school) => {
-    setIsSubmit(true);
+    setIsSubmit(true);  
     dispatch(
       allActions.schoolAddAction.schoolAdd(
         school.schoolName,
@@ -35,8 +37,15 @@ const AddSchoolPage = () => {
     return state.addSchool.addSchool;
   });
 
+  useEffect(()=>{
+    if(!token()){
+      history.push('/');
+    }
+
+  },[token()])
+
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess &&  isSubmit) {
       toast.success("Successfully Inserted !!");
     }
     if (!isSuccess && !isLoading && isSubmit) {

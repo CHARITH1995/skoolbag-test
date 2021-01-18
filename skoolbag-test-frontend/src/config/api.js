@@ -1,5 +1,6 @@
 
 import { BaseURL } from './ServiceURL';
+import { token } from '../config/token';
 
 const TAG = 'Api : '
 
@@ -57,22 +58,22 @@ class Api {
   }
 
   static async callRes(route, params, header, verb) {
+
     const host = BaseURL;
     const url = `${host}${route}`
     let options = Object.assign({ method: verb }, params ? { body: JSON.stringify(params) } : null);
+
     if (header) {
-      // TODO: RETHINK THIS
-     //var token = getToken() 
-      
-      // if (token !== "") {
-      //   options.headers = {
-      //     'accept': '*/*',
-      //     'Content-Type': 'application/json',
-      //     //'Authorization':token,
-      //     // 'Accept': 'application/json',
-      //     // 'Authorization': token,
-      //   }
-      // }
+      let userToken = token();
+      if (token !== "") {
+        options.headers = {
+          'accept': '*/*',
+          'Content-Type': 'application/json',
+          'Authorization':userToken,
+          // 'Accept': 'application/json',
+          // 'Authorization': token,
+        }
+      }
 
       return this.getResponseData(url, options, route);
     } else {

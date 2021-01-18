@@ -28,11 +28,13 @@ export const registerUser = (
       password: password,
     };
     try {
-      const response = await API.post(URL.USER_REGISTER, user, false);
-      if (response.status == 200) {
-        registerUserSuccess(dispatch);
+      const rawResponse = await API.post(URL.USER_REGISTER, user, false);
+      const response = await API.processResponse(rawResponse);
+      
+      if (rawResponse.status == 200) {
+        registerUserSuccess(dispatch,response);
       } else {
-        registerUserFailed(dispatch, response.statusText);
+        registerUserFailed(dispatch);
       }
     } catch (err) {
       registerUserFailed(dispatch, err);
@@ -40,13 +42,16 @@ export const registerUser = (
   };
 };
 
-const registerUserSuccess = (dispatch) => {
+const registerUserSuccess = (dispatch,response) => {
+  localStorage.clear();
+  localStorage.setItem("token",response);
   dispatch({
     type: REG_USER_SUCCESS,
   });
 };
 
 const registerUserFailed = (dispatch, exception) => {
+  
   dispatch({
     type: REG_USER_FAIL,
   });

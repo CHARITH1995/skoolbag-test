@@ -43,7 +43,7 @@ const SignInModal = ({signInShow , handleClose}) => {
 
   useEffect(()=>{
 
-    if(isLoginSuccess){
+    if(isLoginSuccess &&  isSubmit){
       toast.success("Login Successfull !");
       handleClose()
     }

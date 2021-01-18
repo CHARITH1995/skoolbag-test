@@ -3,7 +3,7 @@ const con = require("../config/connection/connection");
 const validations = require("../config/validations/validation");
 
 exports.schoolAdd = (req, res, _next) => {
-    console.log(req.body)
+    
   let email = validations.emailValidation(req.body.email);
   if (!email) {
     res.status(500).send("Incorrect email format!");
@@ -14,6 +14,7 @@ exports.schoolAdd = (req, res, _next) => {
       if (err) {
         return res.status(500).send("something went wrong");
       }
+      
       if (result[0]) {
         return res.status(500).send({ error : "Duplicate email found" });
       } else {

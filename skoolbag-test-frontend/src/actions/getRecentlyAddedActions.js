@@ -7,7 +7,7 @@ export const getRecentlyAddedSchools = () => {
     return async (dispatch) => {
         dispatch({ type: GET_RECENTLY_ADDED_SCHOOL }); 
         try {
-            const rawResponse = await API.get(URL.SCHOOL_GET_RECENT, false);
+            const rawResponse = await API.get(URL.SCHOOL_GET_RECENT,null,false);
             const responseData = await API.processResponse(rawResponse);
             if (rawResponse.status == 200) {
                 getRecentlyAddedSchoolsSuccess(dispatch, responseData);
