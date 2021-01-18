@@ -11,7 +11,7 @@ const SchoolList = (schoolList) => {
       var search = [];
       search =
         x.schoolName.includes(searchText) ||
-        x.street.toLowerCase().includes(searchText) || x.suburb.toLowerCase().includes(searchText) || x.state.toLowerCase().includes(searchText)  || x.postalcode.toString().includes(searchText) || !searchText
+        x.street.toLowerCase().includes(searchText) || x.suburb.toLowerCase().includes(searchText) || x.state.toLowerCase().includes(searchText)  || x.postalcode.toString().includes(searchText) || x.principalName.toLowerCase().includes(searchText)  || !searchText
       if (search.length != 0) {
         return search;
       } else {

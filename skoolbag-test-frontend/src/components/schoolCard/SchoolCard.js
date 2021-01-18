@@ -18,8 +18,8 @@ const SchoolCard = ({id,name , email , principal}) => {
           </div>
           <div className="column-card right-card">
             <Card.Body>
-              <Card.Title>Mr : {principal}</Card.Title>
-              <Card.Text>{email}</Card.Text>
+              <Card.Title>Principal's Name : Mr.{principal}</Card.Title>
+              <Card.Text>School Email : {email}</Card.Text>
               <div className="container">
                 <Link
                   to={"/school/view/" + id}

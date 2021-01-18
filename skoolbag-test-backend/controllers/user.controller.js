@@ -5,6 +5,18 @@ const con = require("../config/connection/connection");
 const validations = require("../config/validations/validation");
 require("dotenv").config();
 
+
+  /**
+ * @api {post} /api/v1/user/add add a user
+ * @apiVersion 1.0.0
+ * @apiName add a user
+ * @apiGroup user
+ * @apiDescription add a user
+ * @apiPermission true
+ * 
+ * @apiParam no
+*/
+
 exports.registerUser = (req, res, _next) => {
  
   let hashedPassword = validations.generateHash(req.body.password);
@@ -60,6 +72,18 @@ exports.registerUser = (req, res, _next) => {
     });
   }
 };
+
+
+  /**
+ * @api {post} /api/v1/user/login user login using email and password
+ * @apiVersion 1.0.0
+ * @apiName login a user
+ * @apiGroup user
+ * @apiDescription login a user to system
+ * @apiPermission true
+ * 
+ * @apiParam no
+*/
 
 exports.userLogin = (req, res, _next) => {
   const sql = "SELECT * FROM users WHERE email= " + mysql.escape(req.body.email);
